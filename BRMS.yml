@@ -1,6 +1,6 @@
 -
   name: Create Zip Of BRMS data on Local Server
-  hosts: all
+  hosts: localhost
   become: true
   vars:
     host_user: suyash
@@ -10,9 +10,9 @@
         path:
           - /home/{{ host_user }}/EAP-6.4.0
           - /home/{{ host_user }}/repositories
-          - /home/{{ host_user }}/.m2
-          - /home/{{ host_user }}/.niogit
-          - /home/{{ host_user }}/.index
-        dest: /home/{{ host_user }}/EAP-6.4.0.zip
+          #- /home/{{ host_user }}/.m2
+          #- /home/{{ host_user }}/.niogit
+          #- /home/{{ host_user }}/.index
+        dest: /home/{{ host_user }}/Music/EAP-6.4.0.zip
         owner: "{{ host_user }}"
         group: "{{ host_user }}"

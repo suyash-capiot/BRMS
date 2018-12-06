@@ -1,7 +1,7 @@
 -
   name: Copy and Unzip BRMS data on Target Server
-  become: true
   hosts: all
+  become: true
   vars:
     host_user: suyash
     target_user: brms
