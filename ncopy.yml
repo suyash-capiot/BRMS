@@ -1,0 +1,7 @@
+-
+  name: Copy and Unzip BRMS data on Target Server
+  hosts: all
+  become: true
+  tasks:
+    - name: Copy BRMS Data
+      shell: /home/suyash/test.sh
