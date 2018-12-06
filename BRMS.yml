@@ -1,0 +1,61 @@
+-
+  name: Create Zip Of BRMS data on Local Server
+  hosts: localhost
+  vars:
+    host_user: suyash
+  tasks:
+    - name: Zip BRMS Data
+      archive:
+        path:
+          - /home/{{ host_user }}/EAP-6.4.0
+          - /home/{{ host_user }}/repositories
+          - /home/{{ host_user }}/.m2
+          - /home/{{ host_user }}/.niogit
+          - /home/{{ host_user }}/.index
+        dest: /home/{{ host_user }}/EAP-6.4.0.zip
+        owner: "{{ host_user }}"
+        group: "{{ host_user }}"
+
+-
+  name: Copy and Unzip BRMS data on Target Server
+  hosts: capiot-brms1
+  vars:
+    host_user: suyash
+    target_user: brms
+  tasks:
+    - name: Copy BRMS Data
+      copy:
+        src: /home/{{ host_user }}/EAP-6.4.0.zip
+        dest: /home/{{ target_user }}/
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+
+    - name: Unzip BRMS Data
+      unarchive:
+        src: /home/{{ target_user }}/EAP-6.4.0.zip
+        dest: /home/{{ target_user }}
+        remote_src: yes
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+
+    - name: Change Permisssion of Directory
+      file:
+        path=/home/{{ target_user }}/{{ item.dir }}
+        owner="{{ target_user }}"
+        group="{{ target_user }}"
+        recurse=yes
+      with_items:
+        - { dir: EAP-6.4.0 }
+        - { dir: repositories }
+        - { dir: .m2 }
+        - { dir: .niogit }
+        - { dir: .index }
+
+    - name: Replace
+      shell:
+        find /home/{{ target_user }} -type f -exec sed -i 's/{{ item }}/g' {} \;
+      with_items:
+        - \home\/{{ host_user }}/\home\/{{ target_user }}
+        - 192.168.56.30/192.168.56.60
+
+    - shell: nohup su - {{ target_user }} -c /home/{{ target_user }}/EAP-6.4.0/bin/standalone.sh &
