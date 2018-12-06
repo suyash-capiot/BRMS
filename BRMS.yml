@@ -1,6 +1,6 @@
 -
   name: Create Zip Of BRMS data on Local Server
-  hosts: localhost
+  hosts: all
   become: true
   vars:
     host_user: suyash
