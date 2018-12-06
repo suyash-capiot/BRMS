@@ -1,7 +1,7 @@
 -
   name: Copy and Unzip BRMS data on Target Server
   become: true
-  hosts: all
+  hosts: 192.168.56.60
   vars:
     host_user: suyash
     target_user: brms
@@ -10,6 +10,6 @@
       copy:
         src: /home/{{ host_user }}/test.txt
         dest: /home/{{ target_user }}/
-        remote_src: yes
+        remote_src: no
         owner: "{{ target_user }}"
         group: "{{ target_user }}"
